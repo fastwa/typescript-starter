@@ -1,24 +1,23 @@
 import { 
   fetchLatestBaileysVersion,
   useMultiFileAuthState,
-} from '@adiwajshing/baileys';
+} from '@whiskeysockets/baileys';
 
-import { WAFactory } from '@fastwa/core';
+import { FastwaFactory } from '@fastwa/core';
 
 import { AppModule } from './app.module';
 
-async function connectToWhatsapp() {
+async function bootstrap() {
   const { version } = await fetchLatestBaileysVersion();
-  const { state, saveCreds } = await useMultiFileAuthState('./sessions');
+  const { state, saveCreds } = await useMultiFileAuthState('.fastwa');
 
-  const app = await WAFactory.create(AppModule, {
+  const app = await FastwaFactory.create(AppModule, {
     version,
     auth: state,
     printQRInTerminal: true,
-    saveCreds
+    saveCreds,
   });
 
   await app.listen();
 }
-
-connectToWhatsapp()
+bootstrap()
